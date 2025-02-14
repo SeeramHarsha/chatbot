@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Captioning</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        h2 {
+            color: #444;
+            margin-top: 20px;
+        }
+        p {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            max-width: 80%;
+            margin: 10px auto;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: white;
+            margin: 5px auto;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        #loading {
+            display: none;
+            font-size: 18px;
+            color: #007bff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload an Image</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <p id="loading">Processing... Please wait.</p>
+
+    <h2>Generated Caption:</h2>
+    <p id="caption">Your caption will appear here.</p>
+
+    <h2>Generated Questions:</h2>
+    <ul id="questions"></ul>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let formData = new FormData();
+            let fileInput = document.getElementById("fileInput").files[0];
+            if (!fileInput) {
+                alert("Please select a file.");
+                return;
+            }
+            formData.append("file", fileInput);
+
+            // Show loading indicator
+            document.getElementById("loading").style.display = "block";
+
+            fetch("/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("loading").style.display = "none"; // Hide loading text
+                
+                document.getElementById("caption").innerText = data.description || "No description generated.";
+                
+                let questionsList = document.getElementById("questions");
+                questionsList.innerHTML = ""; // Clear previous questions
+                
+                if (data.questions) {
+                    let questionsArray = data.questions.split("\n");
+                    questionsArray.forEach(question => {
+                        let li = document.createElement("li");
+                        li.textContent = question;
+                        questionsList.appendChild(li);
+                    });
+                } else {
+                    questionsList.innerHTML = "<li>No questions generated.</li>";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("loading").style.display = "none"; // Hide loading text if error occurs
+            });
+        });
+    </script>
+</body>
+</html>
