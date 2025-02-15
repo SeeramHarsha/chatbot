@@ -1,5 +1,6 @@
+Flask
 torch
 transformers
 Pillow
-Flask
 google-generativeai
+gunicorn
