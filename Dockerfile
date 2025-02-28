@@ -1,17 +1,6 @@
-# Use the official Python image with PyTorch support
-FROM python:3.9
-
-# Set the working directory inside the container
+FROM python:3.10
 WORKDIR /app
-
-# Copy the project files into the container
-COPY . /app
-
-# Install required Python packages
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Expose the port Flask will run on
-EXPOSE 5002
-
-# Run the Flask app using Gunicorn
-CMD ["gunicorn", "-b", "0.0.0.0:5002", "app:app"]
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "app:app"]
