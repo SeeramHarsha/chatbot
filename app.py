@@ -85,7 +85,7 @@ def generate_questions_answers(final_caption):
 
 @app.route('/')
 def index():
-    return render_template('video.html')
+    return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload():
