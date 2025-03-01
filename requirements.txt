@@ -5,4 +5,4 @@ google-generativeai
 Pillow
 Flask_cors
 gunicorn
-python-opencv
+opencv-python
