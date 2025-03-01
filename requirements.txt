@@ -3,4 +3,5 @@ torch
 transformers
 google-generativeai
 PIL
-Flask cors
+Flask_CORS
+os
