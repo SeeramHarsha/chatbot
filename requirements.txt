@@ -4,5 +4,4 @@ transformers
 google-generativeai
 Pillow
 Flask_cors
-os
 gunicorn
