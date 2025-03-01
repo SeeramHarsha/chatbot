@@ -2,7 +2,7 @@ Flask
 torch
 transformers
 google-generativeai
-PIL
+Pillow
 Flask_cors
 os
 gunicorn
