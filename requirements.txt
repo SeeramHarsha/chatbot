@@ -1,6 +1,6 @@
 Flask
 torch
 transformers
-Pillow
 google-generativeai
-gunicorn
+PIL
+Flask cors
