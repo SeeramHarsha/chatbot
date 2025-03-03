@@ -6,3 +6,4 @@ Pillow
 Flask_cors
 gunicorn
 opencv-python
+opencv-python-headless
